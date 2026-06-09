@@ -31,7 +31,7 @@ body { background-color: #f4f6f9; }
 .login-body h4 { color: #1e3a5f; font-size: 15px; margin-bottom: 20px; }
 .stButton > button { background: linear-gradient(135deg, #1e3a5f, #2d5986) !important; color: white !important; border: none !important; border-radius: 8px !important; padding: 10px 28px !important; font-weight: 500 !important; font-size: 14px !important; }
 .stButton > button:hover { opacity: 0.9 !important; transform: translateY(-1px) !important; }
-.navbar-logo { font-size: 18px; font-weight: 700; color: #1e3a5f; }
+.navbar-logo { display: flex; align-items: center; gap: 8px; font-size: 16px; font-weight: 700; color: #1e3a5f; }
 </style>
 """, unsafe_allow_html=True)
 
@@ -105,9 +105,14 @@ if "tickets_data" not in st.session_state:
 
 # ─── NAVBAR ───────────────────────────────────────────────
 def show_navbar():
-    col1, col2, col3, col4, col5, col6 = st.columns([1, 2, 2, 2, 2, 2])
+    col1, col2, col3, col4, col5, col6 = st.columns([2, 2, 2, 2, 2, 1])
     with col1:
-        st.markdown('<div class="navbar-logo">🖥️ DevAssist</div>', unsafe_allow_html=True)
+        st.markdown("""
+        <div class="navbar-logo">
+            <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/3/3d/Alten_logo.svg/320px-Alten_logo.svg.png" height="28">
+            <span>DevAssist</span>
+        </div>
+        """, unsafe_allow_html=True)
     with col2:
         if st.button("🏠 Home"):
             st.session_state.page = "home"
@@ -125,7 +130,7 @@ def show_navbar():
             st.session_state.page = "devices"
             st.rerun()
     with col6:
-        if st.button("🚪 Logout"):
+        if st.button("🚪"):
             st.session_state.logged_in = False
             st.session_state.page = "login"
             st.rerun()
@@ -138,6 +143,7 @@ def page_login():
         st.markdown("""
         <div class="login-box">
             <div class="login-hero">
+                <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/3/3d/Alten_logo.svg/320px-Alten_logo.svg.png" height="40" style="margin-bottom:15px"><br>
                 <h2>Hello 👋</h2>
                 <p>DevAssist — SN2-Platform</p>
             </div>
