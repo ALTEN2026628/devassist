@@ -37,12 +37,13 @@ body { background-color: #f4f6f9; }
 
 # ─── FONCTIONS DONNÉES ────────────────────────────────────
 def get_api_key():
-    api_key = None
-    with open(".env") as f:
-        for line in f:
-            if line.startswith("GROQ_API_KEY"):
-                api_key = line.split("=")[1].strip()
-    return api_key
+    try:
+        return st.secrets["GROQ_API_KEY"]
+    except:
+        with open(".env") as f:
+            for line in f:
+                if line.startswith("GROQ_API_KEY"):
+                    return line.split("=")[1].strip()
 
 @st.cache_data
 def lire_pdfs():
@@ -300,7 +301,6 @@ def page_tickets():
     if df_all is not None and len(df_all) > 0:
         st.success(f"✅ {len(df_all)} tickets chargés")
 
-        # Recherche par mot clé
         search = st.text_input("🔍 Rechercher un ticket (numéro, device, description...)", placeholder="Ex: OpenR Link, FOTA, 4-25350316...")
 
         col1, col2 = st.columns(2)
@@ -317,7 +317,6 @@ def page_tickets():
         if service_filter != "Tous":
             df_filtered = df_filtered[df_filtered["Service"] == service_filter]
 
-        # Appliquer la recherche
         if search:
             mask = df_filtered.apply(
                 lambda row: row.astype(str).str.contains(search, case=False, na=False).any(),
